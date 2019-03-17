@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 @Controller
 @RequestMapping(value = "cheese")
 public class CheeseController {
 
-    static ArrayList<String> cheeses = new ArrayList<>();
+    static HashMap<String, String> cheeses = new HashMap<>();
 
     @RequestMapping(value = "")
     public String index(Model model) {
@@ -31,8 +32,8 @@ public class CheeseController {
     }
 
     @RequestMapping(value="add", method = RequestMethod.POST)
-    public String prcessAddCheeseForm(@RequestParam String cheeseName){
-        cheeses.add(cheeseName);
+    public String prcessAddCheeseForm(@RequestParam String cheeseName, @RequestParam String description){
+        cheeses.put(cheeseName, description);
         return "redirect:";
     }
 }
