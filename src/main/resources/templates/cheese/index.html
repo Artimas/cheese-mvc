@@ -7,7 +7,7 @@
     <p th:unless="${cheeses} and ${cheeses.size()}">no cheese :(</p>
 
         <ul>
-            <li th:each="cheese : ${cheeses}" th:text="${'Name: ' + cheese.key + ' Description: ' + cheese.value}"></li>
+            <li th:each="cheese : ${cheeses}" th:text="${'Name: ' + cheese.getName() + ' Description: ' + cheese.getDescription()}"></li>
         </ul>
 </body>
 </html>
