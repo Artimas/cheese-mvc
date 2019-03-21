@@ -4,10 +4,14 @@ public class Cheese {
 
     private String name;
     private String description;
+    private int id;
+    private static int idCounter = 0;
 
     public Cheese(String name, String description){
         this.name = name;
         this.description = description;
+        this.id = Cheese.idCounter;
+        Cheese.idCounter++;
     }
 
     public Cheese(String name){
@@ -29,6 +33,10 @@ public class Cheese {
     public void setDescription( String aDesc){
         description = aDesc;
     }
+
+    public int getId(){return id;}
+
+
 
 
 

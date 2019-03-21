@@ -33,9 +33,27 @@ public class CheeseController {
     }
 
     @RequestMapping(value="add", method = RequestMethod.POST)
-    public String prcessAddCheeseForm(@RequestParam String cheeseName, @RequestParam String cheeseDescription){
+    public String porcessAddCheeseForm(@RequestParam String cheeseName, @RequestParam String cheeseDescription){
         Cheese cheese = new Cheese(cheeseName, cheeseDescription);
         cheeses.add(cheese);
+        return "redirect:";
+    }
+
+    @RequestMapping(value="remove", method = RequestMethod.GET)
+    public String displayRemoveCheeseForm(Model model) {
+        model.addAttribute("title", "Remove Cheese");
+        model.addAttribute("cheeses", cheeses);
+        return "cheese/remove";
+    }
+
+    @RequestMapping(value="remove", method = RequestMethod.POST)
+    public String processRemoveCheeseForm(@RequestParam ArrayList<Integer> cheeseIds){
+            for (Cheese cheese : cheeses){
+                if (cheeseIds.contains(cheese.getId())){
+                    cheeses.remove(cheese);
+                }
+            }
+
         return "redirect:";
     }
 }
