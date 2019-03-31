@@ -8,8 +8,12 @@ public class Cheese {
     private static int idCounter = 0;
 
     public Cheese(String name, String description){
+        this();
         this.name = name;
         this.description = description;
+    }
+
+    public Cheese(){
         this.id = Cheese.idCounter;
         Cheese.idCounter++;
     }

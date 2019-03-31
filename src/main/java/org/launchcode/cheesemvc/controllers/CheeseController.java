@@ -2,26 +2,24 @@ package org.launchcode.cheesemvc.controllers;
 
 
 import org.launchcode.cheesemvc.models.Cheese;
+import org.launchcode.cheesemvc.models.CheeseData;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 @Controller
 @RequestMapping(value = "cheese")
 public class CheeseController {
 
-    static ArrayList<Cheese> cheeses = new ArrayList<>();
+
 
     @RequestMapping(value = "")
     public String index(Model model) {
 
-        model.addAttribute("cheeses", cheeses);
+        model.addAttribute("cheeses", CheeseData.getAll());
         model.addAttribute("title", "My Cheeses");
         return "cheese/index";
     }
@@ -33,27 +31,44 @@ public class CheeseController {
     }
 
     @RequestMapping(value="add", method = RequestMethod.POST)
-    public String porcessAddCheeseForm(@RequestParam String cheeseName, @RequestParam String cheeseDescription){
-        Cheese cheese = new Cheese(cheeseName, cheeseDescription);
-        cheeses.add(cheese);
+    public String porcessAddCheeseForm(@ModelAttribute Cheese cheese){
+        CheeseData.add(cheese);
         return "redirect:";
     }
 
     @RequestMapping(value="remove", method = RequestMethod.GET)
     public String displayRemoveCheeseForm(Model model) {
         model.addAttribute("title", "Remove Cheese");
-        model.addAttribute("cheeses", cheeses);
+        model.addAttribute("cheeses", CheeseData.getAll());
         return "cheese/remove";
     }
 
     @RequestMapping(value="remove", method = RequestMethod.POST)
     public String processRemoveCheeseForm(@RequestParam ArrayList<Integer> cheeseIds){
-            for (Cheese cheese : cheeses){
-                if (cheeseIds.contains(cheese.getId())){
-                    cheeses.remove(cheese);
-                }
-            }
+        for (int cheeseId : cheeseIds) {
+            CheeseData.remove(cheeseId);
+        }
 
         return "redirect:";
+    }
+
+    @RequestMapping(value = "edit/{cheeseId}", method = RequestMethod.GET)
+    public  String displayEditForm(Model model, @PathVariable int cheeseId) {
+        Cheese aCheese = CheeseData.getById(cheeseId);
+        model.addAttribute("cheese", aCheese);
+        model.addAttribute("title",
+                "Edit Cheese " + aCheese.getName() + "(id=" + aCheese.getId() + ")");
+        return "cheese/edit";
+    }
+
+
+    @RequestMapping(value = "edit/{cheeseId}", method = RequestMethod.POST)
+    public String processEditForm(@PathVariable int cheeseId,
+                                   @RequestParam String cheeseName,
+                                   @RequestParam String cheeseDescription) {
+        Cheese theCheese = CheeseData.getById(cheeseId);
+        theCheese.setName(cheeseName);
+        theCheese.setDescription(cheeseDescription);
+        return "redirect:/cheese";
     }
 }
