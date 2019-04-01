@@ -11,11 +11,15 @@
         <tr>
             <th><b>Cheese Name</b></th>
             <th><b>Cheese Description</b></th>
+            <th><b>Type</b></th>
+            <th><b>Rating</b></th>
             <th></th>
         </tr>
         <tr th:each="cheese : ${cheeses}">
             <td th:text="${cheese.name}"></td>
             <td th:text="${cheese.description}"></td>
+            <td th:text="${cheese.type.name}"></td>
+            <td th:text="${cheese.rating}"></td>
             <td><a th:href="@{'/cheese/edit/' + ${cheese.id}}">Edit Cheese</a></td>
         </tr>
 </table>
